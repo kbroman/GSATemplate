@@ -11,10 +11,10 @@
 \title{Template for preparing your submission to \textit{GENETICS} using Overleaf}
 
 \author[$\ast$,1]{Author One}
-\author[$\dagger$]{Author Two}
-\author[$\ddagger$]{Author Three}
+\author[$\dagger$,1]{Author Two}
+\author[$\ddagger$,2]{Author Three}
 \author[$\S$]{Author Four}
-\author[$\ast\ast$]{Author Five}
+\author[$\ast\ast$,2,3]{Author Five}
 
 \affil[$\ast$]{Author one affiliation}
 \affil[$\dagger$]{Author two affiliation}
@@ -26,7 +26,13 @@
 
 \runningtitle{GENETICS Journal Template on Overleaf} % For use in the footer 
 
-\correspondingauthor{Corresponding Author}
+%% For the footnote.
+%% Give the last name of the first author if only one author;
+% \runningauthor{FirstAuthorLastname}
+%% last names of both authors if there are two authors;
+% \runningauthor{FirstAuthorLastname and SecondAuthorLastname}
+%% last name of the first author followed by et al, if more than two authors.
+\runningauthor{FirstAuthorLastname \textit{et al.}}
 
 \begin{abstract}
 The abstract should be written for people who may not read the entire paper, so it must stand on its own. The impression it makes usually determines whether the reader will go on to read the article, so the abstract must be engaging, clear, and concise. In addition, the abstract may be the only part of the article that is indexed in databases, so it must accurately reflect the content of the article. A well-written abstract is the  most effective way to reach intended readers, leading to more robust search, retrieval, and usage of the article. 
@@ -34,16 +40,20 @@ The abstract should be written for people who may not read the entire paper, so 
 Please see additional guidelines notes on preparing your abstract below.
 \end{abstract}
 
-\setboolean{displaycopyright}{true}
-
 \begin{document}
 
 \maketitle
 \thispagestyle{firststyle}
 \marginmark
 \firstpagefootnote
-\correspondingauthoraffiliation{Please insert the affiliation correspondence address and email for the corresponding author. The corresponding author should be marked with a `1' in the author list, as shown in the example.}
-\vspace{-11pt}%
+
+% Use the \equalcontrib command to mark authors with equal
+% contributions, using the relevant superscript numbers
+\equalcontrib{1}
+\equalcontrib{2}
+
+\correspondingauthoraffiliation{3}{Corresponding author: Please insert the affiliation correspondence address and email for the corresponding author. The corresponding author should be marked with the relevant number in the author list, as shown in the example.}
+\vspace{-33pt}% Only used for adjusting extra space in the left column of the first page
 
 \lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below. 
 
@@ -118,7 +128,7 @@ Use the \verb|\nameref| command with the \verb|\label| command to insert cross-r
 
 \section{In-text Citations}
 
-Add citations using the \verb|\citep{}| command, for example \citep{neher2013genealogies} or for multiple citations, \citep{neher2013genealogies, rodelsperger2014characterization}
+Add citations using the \verb|\citep{}| command, for example \citep{neher2013genealogies} or for multiple citations, \citep{neher2013genealogies, rodelsperger2014characterization,Falush16}
 
 \section{Examples of Article Components}
 \label{sec:examples}
@@ -145,7 +155,7 @@ Figures and Tables should be labelled and referenced in the standard way using t
 
 Figure \ref{fig:spectrum} shows an example figure.
 
-\begin{figure}[htbp]
+\begin{figure}[htbp!]
 \centering
 \includegraphics[width=\linewidth]{example-figure}
 \caption{Example figure from \url{10.1534/genetics.114.173807}. Please include your figures in the manuscript for the review process. You can upload figures to Overleaf via the Project menu. Upon acceptance, we'll ask for your figure files to be uploaded in any of the following formats: TIFF (.tiff), JPEG (.jpg), Microsoft PowerPoint (.ppt), EPS (.eps), or Adobe Illustrator (.ai).  Images should be a minimum of 300 dpi in resolution and 500 dpi minimum if line art images.  RGB, CMYK, and Grayscale are all acceptable. Halftones should be high contrast with sharp detail, because some loss of detail and contrast is inevitable in the production process. Figures should be 10-20 cm in width and 1-25 cm in height. Graph axes must be exactly perpendicular and all lines of equal density.

@@ -1,12 +1,12 @@
 % This class file is provided for authors submitting to the
 % Genetics Society of America's GENETICS Journal
 %
-% Version: 1.4, 2016/07/13
+% Version: 1.7, 2018/07/25
 %
 % Produced by Overleaf (www.overleaf.com)
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gsajnl}[13/07/2016, v1.4]
+\ProvidesClass{gsajnl}[27/07/2018, v1.7]
 \AtEndOfClass{\RequirePackage{microtype}}
 
 % Options for element switching
@@ -72,6 +72,9 @@
 \RequirePackage{textcomp} % For copyright symbol styling
 \newcommand{\copyrightstatement}{Copyright \, \textcopyright\, \the\year{} by the Genetics Society of America}
 
+% v1.6: Remove copyright statement from PDF
+\AtBeginDocument{\setboolean{displaycopyright}{false}}
+
 % Graphics, tables and other formatting
 \RequirePackage{graphicx,xcolor}
 \RequirePackage{colortbl}
@@ -131,7 +134,9 @@
 
 \fancypagestyle{firststyle}{
    \fancyhead[R]{{\watermarkfont GENETICS |} \headerfont \articletypename}
-   \fancyfoot[R]{\footnotesize Genetics, Vol. XXX, XXXX–XXXX \hspace{1em} \monthyeardate\today \hspace{2em} \thepage\ }
+   % v1.6: Remove volume and month information
+%    \fancyfoot[R]{\footnotesize Genetics, Vol. XXX, XXXX–XXXX \hspace{1em} \monthyeardate\today \hspace{2em} \thepage\ }
+   \fancyfoot[R]{\footnotesize Genetics\hspace{2em}\thepage}
 }
 
 % Headers
@@ -141,7 +146,7 @@
 \cfoot{}
 \rfoot{}
 \makeatletter
-\fancyfoot[LE]{\thepage\ \hspace{2em} \@correspondingauthor \hspace{0.2em} \textit{et al.} }
+\fancyfoot[LE]{\thepage\ \hspace{2em} \@runningauthor \hspace{0.2em}}
 \fancyfoot[RO]{\@runningtitle \hspace{2em} \thepage\ }
 \makeatother
 \fancyfoot[LO,RE]{}
@@ -191,7 +196,9 @@
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{12pt}
 
 % Article meta data additional fields
-\newcommand{\correspondingauthor}[1]{\def\@correspondingauthor{#1}}
+\newcommand{\runningauthor}[1]{\def\@runningauthor{#1}}
+%% Backward compatibility
+\newcommand{\correspondingauthor}[1]{\runningauthor{#1}}
 \newcommand{\keywords}[1]{\def\@keywords{#1}}
 \newcommand{\runningtitle}[1]{\def\@runningtitle{#1}}
 
@@ -277,27 +284,36 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
   \kern 2.5pt
 }
 
-\newcommand\blfootnote[1]{%
+\newcommand{\@authfootnote}[2]{%
   \begingroup
   \setlength{\myFootnoteLabel}{0em}
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \addtocounter{Hfootnote}{-1}%
-  \endgroup
+  \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{#1}#2}%
+   \endgroup%
 }
 
-\newcommand\correspondingauthoraffiliation[1]{%
-  \begingroup
-  \setlength{\myFootnoteLabel}{0em}
-\renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
-  \addtocounter{footnote}{-1}%
-  \addtocounter{Hfootnote}{-1}%
-  \endgroup
+\newcommand\blfootnote[1]{%
+  \@authfootnote{}{#1}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{#1}%
+%   \addtocounter{footnote}{-1}%
+%   \addtocounter{Hfootnote}{-1}%
+%   \endgroup%
 }
+
+\newcommand\correspondingauthoraffiliation[2]{%
+  \@authfootnote{#1}{#2}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
+%   \endgroup
+}
+
+\newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
 
 \newcommand{\firstpagefootnote}{\blfootnote{\copyrightfont \ifthenelse{\boolean{displaycopyright}}{\copyrightstatement}{}\\%
 doi: 10.1534/genetics.XXX.XXXXXX \\%
-Manuscript compiled: \today\%
+Manuscript compiled: \today%
 }}
 
 \newenvironment{tableminipage}[1]{\begin{minipage}{#1}\renewcommand\footnoterule{ \kern -1ex}%
