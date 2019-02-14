@@ -2,12 +2,12 @@
 % Genetics Society of America's G3: Genes | Genomes |
 % Genetics Journal
 %
-% Version: 1.1, 2016/07/13
+% Version: 1.5, 2018/07/25
 %
 % Produced by Overleaf (www.overleaf.com)
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gsag3jnl}[13/07/2016, v1.6]
+\ProvidesClass{gsag3jnl}[25/07/2018, v1.5]
 \AtEndOfClass{\RequirePackage[tracking=smallcaps]{microtype}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{extarticle}}
 \ProcessOptions*
@@ -65,8 +65,12 @@
 % Copyright statement
 \RequirePackage{textcomp} % For copyright symbol styling
 \makeatletter
-\newcommand{\copyrightstatement}{Copyright \, \textcopyright\, \the\year{} \@correspondingauthor \hspace{0.2em} \textit{et al.} }
+\newcommand{\copyrightstatement}{Copyright  \textcopyright{} \the\year{} by the Genetics Society of America}
 \makeatother
+
+% v1.4: Remove copyright statement in PDF
+\AtBeginDocument{\setboolean{displaycopyright}{false}}
+
 
 % Graphics, tables and other formatting
 \RequirePackage{graphicx,xcolor}
@@ -134,8 +138,10 @@
 \fancypagestyle{firststyle}{
    \fancyhead[L]{}
    \fancyhead[R]{}
-    \fancyfoot[L]{\includegraphics[width=96pt]{G3_Horizontal_Color_High_Resolution.jpg}}
-   \fancyfoot[R]{{\footerfont Volume X\hspace{1em}|\hspace{1em}\monthyeardate\today\hspace{1em}|\hspace{1em}\thepage\ }}
+    \fancyfoot[L]{\includegraphics[height=1em]{G3Logo_Horiz}}
+    % v1.4: Remove volume and month
+%    \fancyfoot[R]{{\footerfont Volume X\hspace{1em}|\hspace{1em}\monthyeardate\today\hspace{1em}|\hspace{1em}\thepage\ }}
+    \fancyfoot[R]{\footerfont\thepage}
 }
 
 % Headers
@@ -145,10 +151,12 @@
 \cfoot{}
 \rfoot{}
 \makeatletter
-\fancyfoot[LE]{{\footerfont \thepage\hspace{1em}|\hspace{1em}\@correspondingauthor \hspace{0.2em} \textit{et al.} }}
-\fancyfoot[RO]{{\footerfont Volume X\hspace{1em}\monthyeardate\today\hspace{1em}|\hspace{1em}\@runningtitle\hspace{1em}|\hspace{1em}\thepage\ }}
+\fancyfoot[LE]{{\footerfont \thepage\hspace{1em}|\hspace{1em}\@runningauthor \hspace{0.2em}}}
+% v1.4: Remove volume and month
+% \fancyfoot[RO]{{\footerfont Volume X\hspace{1em}\monthyeardate\today\hspace{1em}|\hspace{1em}\@runningtitle\hspace{1em}|\hspace{1em}\thepage\ }}
+\fancyfoot[R]{\footerfont\thepage}
 \makeatother
-\fancyfoot[LO,RE]{\includegraphics[width=96pt]{G3_Horizontal_Color_High_Resolution.jpg}}
+\fancyfoot[LO,RE]{\includegraphics[height=1em]{G3Logo_Horiz}}
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0pt}% % No footer rule
 
@@ -156,7 +164,7 @@
 \newcommand{\logomark}{
 \begin{textblock}{200}(36,36)
 \begin{flushleft}
-\includegraphics[width=126pt]{G3_Horizontal_Color_High_Resolution.jpg}
+\includegraphics[width=1.7129in]{G3Logo_Vert}
 \end{flushleft}
 \end{textblock}
 }
@@ -223,7 +231,9 @@
 \titlespacing*{\paragraph}{0pc}{1.5ex \@plus2pt \@minus1pt}{12pt}
 
 % Article meta data additional fields
-\newcommand{\correspondingauthor}[1]{\def\@correspondingauthor{#1}}
+\newcommand{\runningauthor}[1]{\def\@runningauthor{#1}}
+%% Backward compatibility
+\newcommand{\correspondingauthor}[1]{\runningauthor{#1}}
 \newcommand{\keywords}[1]{\def\@keywords{#1}}
 \newcommand{\runningtitle}[1]{\def\@runningtitle{#1}}
 
@@ -256,7 +266,7 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 }%
 
 % Custom title page
-\renewcommand{\@maketitle}{\bgroup\setlength{\parindent}{0pt}
+\renewcommand{\@maketitle}{\bgroup\setlength{\parindent}{0pt}%
 \begin{adjustwidth}{0pt}{24pt}
 \begin{flushleft}
 {%
@@ -299,26 +309,35 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
   \kern 2.5pt
 }
 
-\newcommand\blfootnote[1]{%
+\newcommand{\@authfootnote}[2]{%
   \begingroup
   \setlength{\myFootnoteLabel}{0em}
-  \renewcommand\thefootnote{}\footnote{#1}%
-  \addtocounter{footnote}{-1}%
-  \addtocounter{Hfootnote}{-1}%
-  \endgroup
+  \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{#1}#2}%
+   \endgroup%
 }
 
-\newcommand\correspondingauthoraffiliation[1]{%
-  \begingroup
-  \setlength{\myFootnoteLabel}{0em}
-\renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
-  \addtocounter{footnote}{-1}%
-  \addtocounter{Hfootnote}{-1}%
-  \endgroup
+\newcommand\blfootnote[1]{%
+  \@authfootnote{}{#1}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{#1}%
+%   \addtocounter{footnote}{-1}%
+%   \addtocounter{Hfootnote}{-1}%
+%   \endgroup%
 }
+
+\newcommand\correspondingauthoraffiliation[2]{%
+  \@authfootnote{#1}{#2}%
+%   \begingroup
+%   \setlength{\myFootnoteLabel}{0em}
+%   \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
+%   \endgroup
+}
+
+\newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
 
 \newcommand{\firstpagefootnote}{\blfootnote{\copyrightfont \ifthenelse{\boolean{displaycopyright}}{\copyrightstatement}{}\\%
-Manuscript compiled: \today\%
+Manuscript compiled: \today%
 }}
 
 \newenvironment{tableminipage}[1]{\begin{minipage}{#1}\renewcommand\footnoterule{ \kern -1ex}%
