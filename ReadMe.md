@@ -7,8 +7,8 @@ Basic LaTeX templates from [Overleaf](https://www.overleaf.com).
 
 The way I obtained them as follows:
 
-- Go to one of the links above.
+- Go to one of the links above
 - Click "Open as Template"
-- Go to your [overleaf project page](https://www.overleaf.com/project
+- Go to your [overleaf project page](https://www.overleaf.com/project)
 - Click the download button next to the project
 - Extract the downloaded zip file
