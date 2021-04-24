@@ -1,12 +1,12 @@
 % This class file is provided for authors submitting to the
 % Genetics Society of America's GENETICS Journal
 %
-% Version: 1.7, 2018/07/25
+% Version: 1.9, 2019/12/10
 %
 % Produced by Overleaf (www.overleaf.com)
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gsajnl}[27/07/2018, v1.7]
+\ProvidesClass{gsajnl}[2019/12/10, v1.9]
 \AtEndOfClass{\RequirePackage{microtype}}
 
 % Options for element switching
@@ -22,8 +22,10 @@
 
 % April 16, 2016:
 % Line numbers
-\RequirePackage[running,switch]{lineno}
-\ifthenelse{\boolean{displaylineno}}{\AtBeginDocument{\linenumbers}}{}
+% v1.8 April 12, 2018: make sure line numbers are 
+% displayed in outer margins of columns; so
+% remove "running" option somehow gets it right
+\RequirePackage[switch,pagewise]{lineno}
 
 % Fonts and language
 \RequirePackage[utf8]{inputenc}
@@ -59,9 +61,9 @@
 \setlength{\affilsep}{0.1em}
 \renewcommand\Authfont{\color{color0}\normalfont\sffamily\bfseries\fontsize{9}{13}\selectfont}
 \renewcommand\Affilfont{\color{color0}\normalfont\sffamily\fontsize{8}{10}\selectfont}
-\makeatletter
+% \makeatletter
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
-\makeatother
+% \makeatother
 \renewcommand\Authands{ and }
 
 % Choose article type
@@ -116,13 +118,13 @@
 \captionsetup[table]{position=below} % Reduce spacing below caption
 
 % Algorithm style
-\makeatletter
+% \makeatletter
 \newcommand\fs@coloruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@coloruled
   \def\@fs@pre{\kern2pt}%
   \def\@fs@post{\kern2pt{\color{color2}\hrule}\relax}%
   \def\@fs@mid{\kern2pt{\color{color2}\hrule}\kern2pt}%
   \let\@fs@iftopcapt\iftrue}
-\makeatother
+% \makeatother
 
 \floatstyle{coloruled}
 \restylefloat{algorithm}
@@ -145,10 +147,10 @@
 \lfoot{}
 \cfoot{}
 \rfoot{}
-\makeatletter
+% \makeatletter
 \fancyfoot[LE]{\thepage\ \hspace{2em} \@runningauthor \hspace{0.2em}}
 \fancyfoot[RO]{\@runningtitle \hspace{2em} \thepage\ }
-\makeatother
+% \makeatother
 \fancyfoot[LO,RE]{}
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0pt}% % No footer rule
@@ -229,12 +231,14 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 \noindent
 {%
 \parbox{\dimexpr\linewidth}{%
+    %% v1.8: turn on line numbers
 	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
     {\absfont\bfseries ABSTRACT} \absfont \theabstract
 }%
 \vskip10pt%
 \noindent
 \parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
+ %% v1.8: turn on line numbers
 \ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
 {\keywordsfont\bfseries\keywordname}\hspace*{0.1em} \keywordsfont \@keywords%
 }%
@@ -307,6 +311,8 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 %   \setlength{\myFootnoteLabel}{0em}
 %   \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
 %   \endgroup
+  %% v1.8: turn on line numbers after this
+  \ifthenelse{\boolean{displaylineno}}{\par\linenumbers}{}
 }
 
 \newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
