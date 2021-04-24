@@ -2,13 +2,21 @@
 % Genetics Society of America's G3: Genes | Genomes |
 % Genetics Journal
 %
-% Version: 1.5, 2018/07/25
+% Version: 1.7, 2019/12/10
 %
 % Produced by Overleaf (www.overleaf.com)
 %
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{gsag3jnl}[25/07/2018, v1.5]
+\ProvidesClass{gsag3jnl}[2019/12/10 v1.7]
+
+%% v1.6: add line numbers toggle
+\RequirePackage{xifthen}
+\newboolean{displaylineno}
+\setboolean{displaylineno}{false}
+
 \AtEndOfClass{\RequirePackage[tracking=smallcaps]{microtype}}
+%% v1.6: add line numbers toggle
+\DeclareOption{lineno}{\setboolean{displaylineno}{true}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{extarticle}}
 \ProcessOptions*
 \LoadClass{extarticle}
@@ -23,6 +31,8 @@
 \RequirePackage{url}
 \RequirePackage[colorlinks=true, allcolors=blue]{hyperref}
 \RequirePackage{pifont}
+%% v1.6: add line numbers toggle
+\RequirePackage[switch,pagewise]{lineno}
 
 \newcommand{\watermarkfont}{\color{black50}\normalfont\fontsize{10}{12}\selectfont}
 \newcommand{\headerfont}{\normalfont\sffamily\fontsize{8}{10}\selectfont}
@@ -49,9 +59,9 @@
 \setlength{\affilsep}{0.1em}
 \renewcommand\Authfont{\color{color0}\normalfont\sffamily\bfseries\fontsize{9}{13}\selectfont}
 \renewcommand\Affilfont{\color{color0}\normalfont\sffamily\fontsize{8}{10}\selectfont}
-\makeatletter
+% \makeatletter
 \renewcommand\AB@affilsepx{, \protect\Affilfont}
-\makeatother
+% \makeatother
 \renewcommand\Authands{ and }
 
 % Choose article type
@@ -60,13 +70,14 @@
   
 % Options for element switching
 \RequirePackage{xifthen}
+\RequirePackage{etoolbox}
 \newboolean{displaycopyright}
 
 % Copyright statement
 \RequirePackage{textcomp} % For copyright symbol styling
-\makeatletter
+% \makeatletter
 \newcommand{\copyrightstatement}{Copyright  \textcopyright{} \the\year{} by the Genetics Society of America}
-\makeatother
+% \makeatother
 
 % v1.4: Remove copyright statement in PDF
 \AtBeginDocument{\setboolean{displaycopyright}{false}}
@@ -119,13 +130,13 @@
 \captionsetup[table]{name={{\color{tabledingbat}\textrm{\ding{110}}}\hspace{0.8em}Table}} % Add the icon to the left of the table name
 
 % Algorithm style
-\makeatletter
+% \makeatletter
 \newcommand\fs@coloruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@coloruled
   \def\@fs@pre{\kern2pt}%
   \def\@fs@post{\kern2pt{\color{color2}\hrule}\relax}%
   \def\@fs@mid{\kern2pt{\color{color2}\hrule}\kern2pt}%
   \let\@fs@iftopcapt\iftrue}
-\makeatother
+% \makeatother
 
 \floatstyle{coloruled}
 \restylefloat{algorithm}
@@ -150,12 +161,12 @@
 \lfoot{}
 \cfoot{}
 \rfoot{}
-\makeatletter
+% \makeatletter
 \fancyfoot[LE]{{\footerfont \thepage\hspace{1em}|\hspace{1em}\@runningauthor \hspace{0.2em}}}
 % v1.4: Remove volume and month
 % \fancyfoot[RO]{{\footerfont Volume X\hspace{1em}\monthyeardate\today\hspace{1em}|\hspace{1em}\@runningtitle\hspace{1em}|\hspace{1em}\thepage\ }}
 \fancyfoot[R]{\footerfont\thepage}
-\makeatother
+% \makeatother
 \fancyfoot[LO,RE]{\includegraphics[height=1em]{G3Logo_Horiz}}
 \renewcommand{\headrulewidth}{0pt}% % No header rule
 \renewcommand{\footrulewidth}{0pt}% % No footer rule
@@ -251,8 +262,10 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 \go}
 
 % Set environment for abstract content and styling
-\newcommand{\abscontent}{
+\newcommand{\abscontent}{%
 \begin{minipage}[t]{453pt}
+%% v1.6: add line numbers toggle
+\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}
 {\color{black50}\rule{\linewidth}{0.5pt}}
 \vskip9pt%
 {\absfont\bfseries\color{color4} ABSTRACT} \absfont \theabstract%
@@ -285,6 +298,9 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 \vskip25pt%
 }%
 
+%% v1.6: add line numbers toggle
+\ifthenelse{\boolean{displaylineno}}{\appto{\maketitle}{\linenumbers}}{}
+
 % Other packages
 \RequirePackage{enumitem} % For reducing bullet list item separation
 
@@ -310,7 +326,7 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 }
 
 \newcommand{\@authfootnote}[2]{%
-  \begingroup
+  \nolinenumbers\begingroup
   \setlength{\myFootnoteLabel}{0em}
   \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{#1}#2}%
    \endgroup%
@@ -332,6 +348,8 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 %   \setlength{\myFootnoteLabel}{0em}
 %   \renewcommand\thefootnote{}\footnote{\footnotelayout\copyrightfont\textsuperscript{1}#1}%
 %   \endgroup
+  %% v1.6: add line numbers toggle
+  \ifthenelse{\boolean{displaylineno}}{\par\linenumbers}{}
 }
 
 \newcommand{\equalcontrib}[1]{\@authfootnote{#1}{These authors contributed equally to this work.}}
